@@ -100,7 +100,7 @@ export default async function DashboardPage({
                 <div className="mt-2 flex items-center justify-between">
                   <span className="text-xs text-slate-500">{pct}% complete</span>
                   <a
-                    href={`/launch?course=${c.id}`}
+                    href={`/course/${c.id}`}
                     className="rounded-md bg-gold-500 px-4 py-1.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-400"
                   >
                     {done ? "Review" : pct > 0 ? "Continue" : "Start"}

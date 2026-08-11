@@ -1,40 +1,45 @@
-"use client";
+import Link from "next/link";
+import { redirect, notFound } from "next/navigation";
+import { getSession } from "@/lib/session";
+import { getCourse } from "@/lib/talentlms";
+import FramedEmbed from "@/components/FramedEmbed";
 
 /**
- * EXPERIMENT: embedded course player.
- * Tries to render the TalentLMS course inside the portal via an iframe.
- * Whether this works depends on TalentLMS's frame headers and browser
- * cookie rules — if the frame stays blank, use "Open full screen"
- * (the redirect flow, which always works).
+ * Embedded course player — keeps the member inside the portal's own chrome
+ * instead of bouncing them out to talentlms.com. Works because "Allow
+ * application to be loaded in a frame" is enabled on the TalentLMS account
+ * (Account & Settings > Security > Other). If that ever gets turned off,
+ * the iframe will stay blank — "Open full screen" always works regardless,
+ * since it's a plain top-level redirect to the same launch URL.
  */
-import Link from "next/link";
-import { useParams } from "next/navigation";
+export default async function EmbeddedCoursePage({ params }: { params: { id: string } }) {
+  const session = await getSession();
+  if (!session) redirect("/login");
 
-export default function EmbeddedCoursePage() {
-  const { id } = useParams<{ id: string }>();
-  const launchUrl = `/api/course/${id}/launch`;
+  const course = await getCourse(params.id).catch(() => null);
+  if (!course) notFound();
+
+  const launchUrl = `/api/course/${params.id}/launch`;
 
   return (
-    <main className="flex h-screen flex-col">
-      <div className="flex items-center justify-between border-b border-ink-800 bg-ink-900 px-4 py-2">
+    <main className="flex h-screen flex-col bg-ink-950">
+      <div className="flex items-center justify-between border-b border-ink-800 bg-ink-900 px-4 py-2.5">
         <Link href="/dashboard" className="text-sm text-slate-400 hover:text-white">
           ← Back to dashboard
         </Link>
-        <span className="text-sm font-bold tracking-tight text-white">
-          CHRIS COLLINS <span className="text-gold-500">INC</span>
-        </span>
+        <span className="min-w-0 truncate px-4 text-sm font-semibold text-white">{course.name}</span>
         <a
           href={launchUrl}
-          className="rounded-md border border-ink-700 px-3 py-1.5 text-sm text-slate-300 hover:border-slate-500 hover:text-white"
+          className="shrink-0 rounded-md border border-ink-700 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-gold-500/50 hover:text-white"
         >
           Open full screen ↗
         </a>
       </div>
-      <iframe
+      <FramedEmbed
         src={launchUrl}
-        className="w-full flex-1 border-0 bg-white"
+        title={course.name}
         allow="fullscreen; autoplay; encrypted-media"
-        title="Course player"
+        label="Loading your training…"
       />
     </main>
   );

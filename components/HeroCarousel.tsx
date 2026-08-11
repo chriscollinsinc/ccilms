@@ -262,7 +262,7 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
                 <div className="mt-6 flex items-center gap-3">
                   {item.enrolled ? (
                     <a
-                      href={`/launch?course=${item.id}`}
+                      href={`/course/${item.id}`}
                       className="rounded-md bg-gold-500 px-6 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-400"
                     >
                       {item.pct > 0 && item.pct < 100 ? "Continue" : item.pct >= 100 ? "Review" : "Start now"}

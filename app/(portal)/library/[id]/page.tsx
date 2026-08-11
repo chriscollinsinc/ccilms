@@ -83,7 +83,7 @@ export default async function CourseDetailPage({ params }: { params: { id: strin
             <div className="mt-6 flex items-center gap-3">
               {enrolled ? (
                 <a
-                  href={`/launch?course=${course.id}`}
+                  href={`/course/${course.id}`}
                   className="rounded-md bg-gold-500 px-8 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-400"
                 >
                   {pct >= 100 ? "Review course" : pct > 0 ? "Continue course" : "Start course"}
