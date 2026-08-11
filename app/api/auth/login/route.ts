@@ -29,6 +29,11 @@ export async function POST(req: Request) {
   } catch (e) {
     if (e instanceof TalentLmsError) {
       console.error(`TalentLMS ${e.status}: ${e.message}`);
+      // TalentLMS returns 403 (with this message) for plain bad credentials,
+      // so check the message BEFORE treating 4xx as a server config problem.
+      if (/password is incorrect|incorrect.*(login|password)/i.test(e.message)) {
+        return NextResponse.json({ error: "Invalid username or password." }, { status: 401 });
+      }
       if (e.status === 401) {
         return NextResponse.json({ error: "Server config issue: TalentLMS rejected the API key." }, { status: 502 });
       }
