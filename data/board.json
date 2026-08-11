@@ -1,0 +1,66 @@
+{
+  "channels": [
+    {
+      "id": "announcements",
+      "name": "Announcements",
+      "description": "News from the Chris Collins team"
+    },
+    {
+      "id": "general",
+      "name": "General",
+      "description": "Talk shop with fellow members"
+    },
+    {
+      "id": "wins",
+      "name": "Wins",
+      "description": "Share your numbers and victories"
+    },
+    {
+      "id": "ask",
+      "name": "Ask the Community",
+      "description": "Get answers from people who've been there"
+    }
+  ],
+  "threads": [
+    {
+      "id": "mrjtahpoepjix1",
+      "channelId": "general",
+      "title": "Welcome to the Community Board",
+      "authorKey": "mikedones",
+      "authorName": "Mike Dones",
+      "createdAt": "2026-07-13T22:46:28.908Z",
+      "pinned": true,
+      "locked": true,
+      "tag": "homework"
+    }
+  ],
+  "posts": [
+    {
+      "id": "mrjtahpob04wx0",
+      "threadId": "mrjtahpoepjix1",
+      "authorKey": "mikedones",
+      "authorName": "Mike Dones",
+      "body": "This is where we talk shop — ask questions, share wins, and help each other grow. Welcome aboard!",
+      "createdAt": "2026-07-13T22:46:28.908Z",
+      "likes": []
+    },
+    {
+      "id": "mrxzadaxemeqda",
+      "threadId": "mrjtahpoepjix1",
+      "authorKey": "mikedones",
+      "authorName": "Mike Dones",
+      "body": "The Home Work was great.  Highly recommend it to every advisor.",
+      "createdAt": "2026-07-23T20:43:07.353Z",
+      "likes": [],
+      "attachments": [
+        {
+          "id": "43952a28-4a66-4406-9837-dbe808518739",
+          "name": "-N Composite _3_.xlsx",
+          "size": 7265,
+          "type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+      ],
+      "editedAt": "2026-07-24T15:25:06.878Z"
+    }
+  ]
+}

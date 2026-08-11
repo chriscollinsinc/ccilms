@@ -1,0 +1,29 @@
+{
+  "featured": [
+    {
+      "courseId": "126",
+      "tagline": "Learn to become a PSA",
+      "previewVideo": "https://www.youtube.com/watch?v=Lrb7scLAOSA&t=247s",
+      "previewDuration": 20,
+      "image": ""
+    },
+    {
+      "courseId": "145",
+      "tagline": "",
+      "previewVideo": "",
+      "image": ""
+    },
+    {
+      "courseId": "150",
+      "tagline": "",
+      "previewVideo": "",
+      "image": ""
+    },
+    {
+      "courseId": "148",
+      "tagline": "",
+      "previewVideo": "",
+      "image": ""
+    }
+  ]
+}

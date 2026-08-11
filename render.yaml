@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: cci-lms-portal
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: TALENTLMS_DOMAIN
+        sync: false
+      - key: TALENTLMS_API_KEY
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: PORTAL_URL
+        sync: false
+      - key: TALENTLMS_MOCK
+        value: "false"
+      - key: YOUTUBE_API_KEY
+        sync: false

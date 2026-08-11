@@ -1,0 +1,61 @@
+{
+  "podcast": {
+    "title": "Service Drive Revolution",
+    "description": "The #1 automotive service podcast. Catch up on past episodes or join us live.",
+    "episodes": [
+      {
+        "id": "dQw4w9WgXcQ",
+        "title": "EDIT ME — Episode title 1"
+      },
+      {
+        "id": "dQw4w9WgXcQ",
+        "title": "EDIT ME — Episode title 2"
+      },
+      {
+        "id": "dQw4w9WgXcQ",
+        "title": "EDIT ME — Episode title 3"
+      }
+    ],
+    "channelUrl": "https://www.youtube.com/@ChrisCollinsInc",
+    "live": {
+      "podcastUrl": "https://www.youtube.com/@ChrisCollinsInc/live",
+      "zoomUrl": "https://zoom.us/j/XXXXXXXXX",
+      "zoomLabel": "Private Lesson with Chris — Live on Zoom",
+      "mode": "off",
+      "liveUrl": "",
+      "scheduleLabel": "Every Wednesday · 10:00 AM PST"
+    }
+  },
+  "coach": {
+    "title": "Ask Chris Collins",
+    "description": "Chat with the AI trained on Chris's books and podcasts.",
+    "embedUrl": "https://www.delphi.ai/embed/41147235-e1c6-4f41-ba16-9da46a76ba3e?theme=dark",
+    "passUserEmail": false
+  },
+  "resources": [
+    {
+      "title": "EDIT ME — Service Advisor Scripts",
+      "description": "Word-for-word scripts for the service lane.",
+      "href": "#"
+    },
+    {
+      "title": "EDIT ME — Manager's Daily Checklist",
+      "description": "The daily operating rhythm for service managers.",
+      "href": "#"
+    }
+  ],
+  "tools": [
+    {
+      "title": "Labor Rate Calculator",
+      "description": "Find your effective labor rate and where you're leaving money.",
+      "href": "/tools/labor-rate-calculator",
+      "ready": false
+    },
+    {
+      "title": "Tech Efficiency Tracker",
+      "description": "Spot your shop's real capacity at a glance.",
+      "href": "/tools/tech-efficiency",
+      "ready": false
+    }
+  ]
+}
