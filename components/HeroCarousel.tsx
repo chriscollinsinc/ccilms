@@ -179,7 +179,7 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
     <div
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      className="relative overflow-hidden rounded-2xl border border-ink-700"
+      className="relative overflow-hidden border-b border-ink-800"
     >
       <div className="relative aspect-[21/8] min-h-[280px] w-full bg-ink-800">
         {items.map((item, i) => {
@@ -236,7 +236,7 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
 
               {/* Copy + CTAs */}
               <div className="absolute inset-y-0 left-0 flex max-w-xl flex-col justify-center p-10">
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-500">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent-500">
                   Featured training
                 </p>
                 <h1
@@ -263,13 +263,13 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
                   {item.enrolled ? (
                     <a
                       href={`/course/${item.id}`}
-                      className="rounded-md bg-gold-500 px-6 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-400"
+                      className="rounded-md bg-accent-500 px-6 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-400"
                     >
                       {item.pct > 0 && item.pct < 100 ? "Continue" : item.pct >= 100 ? "Review" : "Start now"}
                     </a>
                   ) : (
                     <form action={`/api/course/${item.id}/enroll`} method="POST">
-                      <button className="rounded-md bg-gold-500 px-6 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-gold-400">
+                      <button className="rounded-md bg-accent-500 px-6 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-400">
                         Add to my training
                       </button>
                     </form>

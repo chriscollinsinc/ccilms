@@ -44,6 +44,7 @@ export async function PUT(req: Request) {
       image: typeof f.image === "string" ? f.image.trim() : "",
     }));
 
-  await writeHome({ featured });
+  const current = await readHome();
+  await writeHome({ ...current, featured });
   return NextResponse.json({ ok: true });
 }

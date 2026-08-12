@@ -3,56 +3,47 @@
 @tailwind utilities;
 
 body {
-  @apply bg-ink-950 text-slate-200 antialiased;
-  /* Shop lamp from above + faint corrugated wall */
-  background-image:
-    radial-gradient(1100px 520px at 50% -120px, rgba(255, 140, 26, 0.07), transparent 65%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.012) 0 2px, transparent 2px 5px);
-  background-attachment: fixed;
+  @apply bg-ink-950 text-[#E4E0CB] antialiased;
 }
 
-/* Neon signage */
+h1, h2, h3, .font-display {
+  font-family: theme("fontFamily.display");
+  letter-spacing: 0.01em;
+}
+
+/* Brand wordmark — flat, no glow. Class names kept as-is so existing
+   components (Sidebar, login page) didn't need to change. */
 .neon-sign {
-  color: #fff6e8;
-  text-shadow:
-    0 0 6px rgba(255, 177, 77, 0.9),
-    0 0 18px rgba(255, 140, 26, 0.55),
-    0 0 42px rgba(255, 140, 26, 0.3);
+  color: #ffffff;
+  font-family: theme("fontFamily.display");
+  text-transform: uppercase;
 }
 .neon-sign-gold {
-  color: #ffb14d;
-  text-shadow:
-    0 0 6px rgba(255, 177, 77, 0.8),
-    0 0 20px rgba(255, 140, 26, 0.5),
-    0 0 44px rgba(255, 140, 26, 0.28);
+  color: theme("colors.gold.500");
+  font-family: theme("fontFamily.display");
+  text-transform: uppercase;
 }
 
-/* Page titles get a faint neon warmth */
-main h1 {
-  text-shadow: 0 0 24px rgba(255, 140, 26, 0.22);
-}
-
-/* Diamond-plate steel (sidebars, footers, tool surfaces) */
+/* Flat surface — replaces the old diamond-plate texture. Class name kept so
+   call sites (Sidebar footer, etc.) didn't need to change. */
 .plate {
-  background-color: #14100b;
-  background-image:
-    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.045) 0 2px, transparent 2px 13px),
-    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 13px);
+  background-color: theme("colors.ink.800");
 }
 
-/* Brick wall (hero moments) */
+/* Retired: brick/hazard textures. Kept as harmless no-ops in case anything
+   still references the class names, rather than risk a missed spot. */
 .brick {
-  background-color: #120d09;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1.5px, transparent 1.5px 44px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1.5px, transparent 1.5px 110px);
+  background-color: theme("colors.ink.900");
+}
+.hazard {
+  background-color: theme("colors.gold.500");
 }
 
-/* Hazard stripe accent (sparingly) */
-.hazard {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(217, 162, 51, 0.85) 0 12px,
-    rgba(11, 9, 7, 0.9) 12px 24px
-  );
+/* Live-session pulse (used by the Home "today" strip) */
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.live-dot {
+  animation: livePulse 1.6s ease-in-out infinite;
 }

@@ -6,22 +6,25 @@
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { home as defaults, type FeaturedCourse } from "@/config/portal";
+import { home as defaults, type FeaturedCourse, type LiveSession } from "@/config/portal";
 
 const FILE = path.join(process.cwd(), "data", "home.json");
 
 export interface HomeConfig {
   featured: FeaturedCourse[];
+  liveSession: LiveSession;
 }
 
 export async function readHome(): Promise<HomeConfig> {
   try {
     const raw = await fs.readFile(FILE, "utf8");
-    const parsed = JSON.parse(raw) as HomeConfig;
-    if (Array.isArray(parsed.featured)) return parsed;
-    return { featured: defaults.featured };
+    const parsed = JSON.parse(raw) as Partial<HomeConfig>;
+    return {
+      featured: Array.isArray(parsed.featured) ? parsed.featured : defaults.featured,
+      liveSession: parsed.liveSession ?? defaults.liveSession,
+    };
   } catch {
-    return { featured: defaults.featured };
+    return { featured: defaults.featured, liveSession: defaults.liveSession };
   }
 }
 

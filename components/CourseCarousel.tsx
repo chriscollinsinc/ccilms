@@ -94,12 +94,12 @@ function Card({ item }: { item: CarouselItem }) {
               )}
               <div className="mt-2 flex items-center gap-2 pb-1">
                 {item.enrolled ? (
-                  <a href={`/course/${item.id}`} className="rounded bg-gold-500 px-3 py-1 text-xs font-semibold text-ink-950 hover:bg-gold-400">
+                  <a href={`/course/${item.id}`} className="rounded bg-accent-500 px-3 py-1 text-xs font-semibold text-ink-950 hover:bg-accent-400">
                     {item.pct > 0 && item.pct < 100 ? "Continue" : item.pct >= 100 ? "Review" : "Start"}
                   </a>
                 ) : (
                   <form action={`/api/course/${item.id}/enroll`} method="POST">
-                    <button className="rounded border border-gold-500/60 px-3 py-1 text-xs font-semibold text-gold-400 hover:bg-gold-500 hover:text-ink-950">
+                    <button className="rounded border border-accent-500/60 px-3 py-1 text-xs font-semibold text-accent-500 hover:bg-accent-500 hover:text-ink-950">
                       Add to my training
                     </button>
                   </form>

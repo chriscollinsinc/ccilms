@@ -39,16 +39,13 @@ export default function Sidebar({ userName, isAdmin = false }: { userName: strin
         onMouseLeave={() => setOpen(false)}
         className="absolute inset-y-0 left-0 flex flex-col overflow-hidden border-r border-ink-800 bg-ink-900"
         style={{
-          width: open ? 232 : 64,
-          transition: "width 380ms cubic-bezier(.22,1,.36,1)",
-          boxShadow: open ? "12px 0 40px rgba(0,0,0,.45)" : "none",
+          width: open ? 224 : 64,
+          transition: "width 260ms cubic-bezier(.4,0,.2,1)",
+          boxShadow: open ? "10px 0 32px rgba(0,0,0,.5)" : "none",
         }}
       >
-        {/* Hazard stripe cap */}
-        <div className="hazard h-1.5 w-full shrink-0" />
-
-        {/* Logo — neon shop sign */}
-        <Link href="/home" className="flex h-16 shrink-0 items-center whitespace-nowrap pl-5 font-bold tracking-tight">
+        {/* Logo */}
+        <Link href="/home" className="flex h-15 shrink-0 items-center whitespace-nowrap border-b border-ink-800 pl-5 text-sm font-bold tracking-tight" style={{ height: 60 }}>
           <span className="neon-sign">CC</span>
           <span
             style={{
@@ -63,17 +60,16 @@ export default function Sidebar({ userName, isAdmin = false }: { userName: strin
         </Link>
 
         {/* Nav */}
-        <nav className="relative flex-1 px-2">
-          {/* Sliding active pill */}
+        <nav className="relative flex-1 px-2.5 pt-3">
+          {/* Sliding active indicator — flat, no glow/bounce */}
           {activeIndex >= 0 && (
             <span
               aria-hidden
-              className="absolute left-2 right-2 rounded-lg border border-gold-500/35 bg-gold-500/10"
+              className="absolute left-2.5 right-2.5 rounded border-l-2 border-gold-500 bg-gold-500/[0.08]"
               style={{
                 height: ITEM_H,
                 top: activeIndex * (ITEM_H + ITEM_GAP),
-                transition: "top 450ms cubic-bezier(.34,1.4,.4,1)",
-                boxShadow: "0 0 18px rgba(255,140,26,.18), inset 0 0 14px rgba(255,140,26,.06)",
+                transition: "top 320ms cubic-bezier(.4,0,.2,1)",
               }}
             />
           )}
@@ -84,8 +80,8 @@ export default function Sidebar({ userName, isAdmin = false }: { userName: strin
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`group flex items-center gap-3 whitespace-nowrap rounded-lg px-3 text-sm font-medium transition-colors ${
-                      active ? "text-gold-400" : "text-slate-400 hover:text-white"
+                    className={`group flex items-center gap-3 whitespace-nowrap rounded px-3 font-display text-xs font-medium uppercase tracking-wide transition-colors ${
+                      active ? "text-gold-500" : "text-slate-400 hover:text-white"
                     }`}
                     style={{ height: ITEM_H }}
                   >
@@ -93,10 +89,10 @@ export default function Sidebar({ userName, isAdmin = false }: { userName: strin
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="1.8"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className={`h-5 w-5 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 ${
+                      className={`h-[17px] w-[17px] shrink-0 transition-transform duration-150 group-hover:-translate-y-[1.5px] ${
                         active ? "text-gold-500" : "text-slate-500 group-hover:text-slate-200"
                       }`}
                     >
@@ -106,7 +102,7 @@ export default function Sidebar({ userName, isAdmin = false }: { userName: strin
                       style={{
                         opacity: open ? 1 : 0,
                         transform: open ? "translateX(0)" : "translateX(-6px)",
-                        transition: `opacity 250ms ease ${80 + i * 30}ms, transform 250ms ease ${80 + i * 30}ms`,
+                        transition: `opacity 200ms ease ${60 + i * 20}ms, transform 200ms ease ${60 + i * 20}ms`,
                       }}
                     >
                       {item.label}
@@ -121,7 +117,7 @@ export default function Sidebar({ userName, isAdmin = false }: { userName: strin
         {/* User / sign out */}
         <div className="plate shrink-0 border-t border-ink-800 p-3">
           <div className="flex items-center gap-3 whitespace-nowrap">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-700 text-xs font-semibold text-gold-400">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-gold-500 font-display text-[11px] font-bold text-ink-950">
               {userName
                 .split(" ")
                 .map((n) => n[0])

@@ -27,7 +27,6 @@ export const config = {
     "/resources/:path*",
     "/tools/:path*",
     "/course/:path*",
-    "/launch",
     "/admin/:path*",
     "/api/admin/:path*",
     "/api/board/:path*",

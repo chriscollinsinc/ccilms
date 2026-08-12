@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readBoard, mutateBoard, newId } from "@/lib/boardStore";
+import { readBoard, mutateBoard, newId, summarizeThreads } from "@/lib/boardStore";
 import { getBoardUser } from "@/lib/boardAuth";
 import { getUsers } from "@/lib/talentlms";
 import { cleanAttachments } from "@/lib/uploads";
@@ -11,21 +11,7 @@ export async function GET() {
   if (!me) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
 
   const [board, users] = await Promise.all([readBoard(), getUsers().catch(() => [])]);
-  const threads = board.threads
-    .map((t) => {
-      const posts = board.posts.filter((p) => p.threadId === t.id);
-      const last = posts[posts.length - 1];
-      return {
-        ...t,
-        replyCount: Math.max(posts.length - 1, 0),
-        lastActivity: last?.createdAt ?? t.createdAt,
-      };
-    })
-    // Pinned threads float to the top, then most-recent activity.
-    .sort((a, b) => {
-      if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
-      return a.lastActivity < b.lastActivity ? 1 : -1;
-    });
+  const threads = summarizeThreads(board);
 
   return NextResponse.json({
     channels: board.channels,

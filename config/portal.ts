@@ -11,6 +11,13 @@ export interface FeaturedCourse {
   image?: string; // optional override; defaults to the TalentLMS course thumbnail
 }
 
+export interface LiveSession {
+  enabled: boolean;
+  title: string; // e.g. "Live Coaching Call w/ Chris"
+  whenLabel: string; // e.g. "Tuesday, Aug 18 · 2:00 PM ET"
+  joinUrl: string; // Zoom/YouTube link
+}
+
 export const home = {
   // Courses to spotlight, in order. First one is the big hero.
   // If empty, the page features the first courses from your catalog.
@@ -21,6 +28,14 @@ export const home = {
       previewVideo: "", // EDIT ME — e.g. "https://yourcdn.com/previews/course-126.mp4"
     },
   ] as FeaturedCourse[],
+
+  // Shown as the "next live session" card on Home. Set enabled: false to hide it.
+  liveSession: {
+    enabled: false,
+    title: "Live Coaching Call w/ Chris",
+    whenLabel: "EDIT ME — e.g. Tuesday, Aug 18 · 2:00 PM ET",
+    joinUrl: "https://zoom.us/j/XXXXXXXXX", // EDIT ME
+  } as LiveSession,
 };
 
 export const podcast = {

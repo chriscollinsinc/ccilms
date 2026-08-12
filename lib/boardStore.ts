@@ -87,3 +87,30 @@ export function mutateBoard<T>(fn: (data: BoardData) => T | Promise<T>): Promise
 export function newId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
+
+export interface ThreadSummary extends Thread {
+  replyCount: number;
+  lastActivity: string;
+  channelName: string;
+}
+
+/** Thread summaries — pinned first, then most-recent activity. Shared by the
+ *  board API route and the Home page's community teaser. */
+export function summarizeThreads(board: BoardData): ThreadSummary[] {
+  const channelName = (id: string) => board.channels.find((c) => c.id === id)?.name ?? id;
+  return board.threads
+    .map((t) => {
+      const posts = board.posts.filter((p) => p.threadId === t.id);
+      const last = posts[posts.length - 1];
+      return {
+        ...t,
+        replyCount: Math.max(posts.length - 1, 0),
+        lastActivity: last?.createdAt ?? t.createdAt,
+        channelName: channelName(t.channelId),
+      };
+    })
+    .sort((a, b) => {
+      if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+      return a.lastActivity < b.lastActivity ? 1 : -1;
+    });
+}
