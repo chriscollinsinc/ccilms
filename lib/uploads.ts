@@ -21,7 +21,12 @@ interface StoredMeta extends Attachment {
   storedName: string;
 }
 
-const DIR = path.join(process.cwd(), "data", "uploads");
+// UPLOAD_DIR points at the mounted Render persistent disk in production
+// (e.g. /var/data/uploads) so files survive deploys/restarts. Falls back to
+// a local folder for dev, where ephemeral storage is fine.
+export const UPLOAD_BASE_DIR = process.env.UPLOAD_DIR || path.join(process.cwd(), "data", "uploads");
+
+const DIR = UPLOAD_BASE_DIR;
 const INDEX = path.join(DIR, "index.json");
 
 export const MAX_BYTES = 20 * 1024 * 1024;

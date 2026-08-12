@@ -5,6 +5,13 @@ services:
     plan: starter
     buildCommand: npm ci && npm run build
     startCommand: npm run start
+    # Persistent disk so uploaded files (course trailers, board attachments)
+    # survive deploys/restarts instead of living on the ephemeral container
+    # filesystem. Bump sizeGB if trailers/attachments fill it up.
+    disk:
+      name: uploads
+      mountPath: /var/data
+      sizeGB: 5
     envVars:
       - key: NODE_VERSION
         value: "20"
@@ -20,3 +27,5 @@ services:
         value: "false"
       - key: YOUTUBE_API_KEY
         sync: false
+      - key: UPLOAD_DIR
+        value: /var/data/uploads

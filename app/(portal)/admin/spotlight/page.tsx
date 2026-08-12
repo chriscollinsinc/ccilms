@@ -20,6 +20,8 @@ export default function SpotlightEditor() {
   const [catalog, setCatalog] = useState<CatalogCourse[]>([]);
   const [q, setQ] = useState("");
   const [state, setState] = useState<"loading" | "ready" | "denied" | "saving" | "saved" | "error">("loading");
+  // Per-row upload progress: courseId -> "uploading" | error message.
+  const [uploadState, setUploadState] = useState<Record<string, "uploading" | string>>({});
 
   useEffect(() => {
     fetch("/api/admin/home")
@@ -51,6 +53,33 @@ export default function SpotlightEditor() {
   }
   function patch(i: number, p: Partial<Feat>) {
     setFeatured(featured.map((f, x) => (x === i ? { ...f, ...p } : f)));
+  }
+
+  async function uploadVideo(i: number, courseId: string, file: File) {
+    if (file.size > 300 * 1024 * 1024) {
+      setUploadState((s) => ({ ...s, [courseId]: "File is larger than 300MB." }));
+      return;
+    }
+    setUploadState((s) => ({ ...s, [courseId]: "uploading" }));
+    const form = new FormData();
+    form.append("file", file);
+    form.append("courseId", courseId);
+    try {
+      const r = await fetch("/api/admin/spotlight/upload", { method: "POST", body: form });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) {
+        setUploadState((s) => ({ ...s, [courseId]: data.error ?? "Upload failed." }));
+        return;
+      }
+      patch(i, { previewVideo: data.url });
+      setUploadState((s) => {
+        const next = { ...s };
+        delete next[courseId];
+        return next;
+      });
+    } catch {
+      setUploadState((s) => ({ ...s, [courseId]: "Upload failed — check your connection and try again." }));
+    }
   }
 
   async function save() {
@@ -151,6 +180,32 @@ export default function SpotlightEditor() {
                         />
                         <span className="text-xs text-slate-500">sec</span>
                       </div>
+                    </div>
+                    <div className="mt-2 flex items-center gap-3">
+                      <label className="flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md border border-ink-700 bg-ink-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-gold-500 hover:text-white">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-3.5 w-3.5">
+                          <path d="M12 16V4M12 4l4 4M12 4 8 8" />
+                          <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+                        </svg>
+                        Upload video file
+                        <input
+                          type="file"
+                          accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov,.m4v"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            e.target.value = "";
+                            if (file) uploadVideo(i, f.courseId, file);
+                          }}
+                        />
+                      </label>
+                      <span className="text-[11px] text-slate-500">MP4/WebM/MOV, up to 300MB — or paste a link above</span>
+                      {uploadState[f.courseId] === "uploading" && (
+                        <span className="text-xs text-gold-400">Uploading…</span>
+                      )}
+                      {uploadState[f.courseId] && uploadState[f.courseId] !== "uploading" && (
+                        <span className="text-xs text-red-400">{uploadState[f.courseId]}</span>
+                      )}
                     </div>
                   </div>
                   <div className="flex shrink-0 flex-col gap-1">
