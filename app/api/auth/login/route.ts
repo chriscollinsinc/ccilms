@@ -1,11 +1,33 @@
 import { NextResponse } from "next/server";
 import { userLogin, getUserByEmail, TalentLmsError } from "@/lib/talentlms";
 import { createSession } from "@/lib/session";
+import { rateLimit, clearRateLimit, clientIp } from "@/lib/rateLimit";
+
+// Per-account: 5 attempts / 15 min. Per-IP: 20 attempts / 15 min (looser —
+// catches someone spraying many different usernames from one address
+// without punishing an office full of people sharing an IP).
+const ACCOUNT_LIMIT = { max: 5, windowMs: 15 * 60 * 1000 };
+const IP_LIMIT = { max: 20, windowMs: 15 * 60 * 1000 };
 
 export async function POST(req: Request) {
   const { login, password } = await req.json().catch(() => ({}));
   if (!login || !password) {
     return NextResponse.json({ error: "Username and password are required." }, { status: 400 });
+  }
+
+  const ip = clientIp(req);
+  const accountKey = `login:${String(login).toLowerCase()}`;
+  const ipKey = `ip:${ip}`;
+
+  const ipCheck = rateLimit(ipKey, IP_LIMIT.max, IP_LIMIT.windowMs);
+  const accountCheck = rateLimit(accountKey, ACCOUNT_LIMIT.max, ACCOUNT_LIMIT.windowMs);
+
+  if (!ipCheck.allowed || !accountCheck.allowed) {
+    const retryAfter = Math.max(ipCheck.retryAfterSeconds, accountCheck.retryAfterSeconds);
+    return NextResponse.json(
+      { error: "Too many login attempts. Please wait a few minutes and try again." },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } }
+    );
   }
 
   try {
@@ -25,6 +47,7 @@ export async function POST(req: Request) {
     // fetch a fresh one via /api/course/[id]/launch.
     const result = await userLogin(loginName, password);
     await createSession({ userId: result.user_id, login: loginName });
+    clearRateLimit(accountKey);
     return NextResponse.json({ ok: true });
   } catch (e) {
     if (e instanceof TalentLmsError) {

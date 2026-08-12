@@ -9,12 +9,42 @@ export interface Standing {
 }
 
 let cache: { data: Standing[]; ts: number } | null = null;
+let inflight: Promise<Standing[]> | null = null;
 const TTL = 10 * 60 * 1000;
 
 /** Ranked standings (learners only — staff excluded), cached 10 minutes. */
 export async function getStandings(): Promise<Standing[]> {
   if (cache && Date.now() - cache.ts < TTL) return cache.data;
 
+  // Several requests can land at once right when the cache expires (e.g.
+  // a few people opening the leaderboard within the same second). Without
+  // this, each one would kick off its own full TalentLMS fetch/hydration.
+  // Share a single in-flight refresh instead.
+  if (inflight) return inflight;
+
+  inflight = refresh().finally(() => {
+    inflight = null;
+  });
+  return inflight;
+}
+
+async function refresh(): Promise<Standing[]> {
+  try {
+    const data = await computeStandings();
+    cache = { data, ts: Date.now() };
+    return data;
+  } catch (e) {
+    // TalentLMS hiccup — serve the last good standings rather than a
+    // broken page, if we have any.
+    if (cache) {
+      console.error("getStandings: refresh failed, serving stale cache:", e);
+      return cache.data;
+    }
+    throw e;
+  }
+}
+
+async function computeStandings(): Promise<Standing[]> {
   let users = await getUsers();
   users = users.filter((u) => u.status !== "inactive" && !isBuiltinAdmin(u));
 
@@ -40,6 +70,5 @@ export async function getStandings(): Promise<Standing[]> {
     }))
     .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
 
-  cache = { data: standings, ts: Date.now() };
   return standings;
 }
