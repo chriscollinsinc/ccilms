@@ -21,3 +21,14 @@ export function codeSort(a?: string, b?: string, nameA?: string, nameB?: string)
 export function stripHtml(html?: string): string {
   return (html ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
+
+/**
+ * TalentLMS serves a bright default image (rb_unknown / course_default) for
+ * courses with no uploaded artwork. Treat those as "no image" so cards fall
+ * back to the dark branded thumb instead of a wall of beige placeholders.
+ */
+export function realImage(url?: string): string | undefined {
+  if (!url) return undefined;
+  if (/rb_unknown|course_default|\/images\/defaults\//i.test(url)) return undefined;
+  return url;
+}

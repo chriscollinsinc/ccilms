@@ -7,6 +7,7 @@ import { readBoard, summarizeThreads } from "@/lib/boardStore";
 import { getStandings } from "@/lib/leaderboard";
 import CourseCarousel, { type CarouselItem } from "@/components/CourseCarousel";
 import HeroCarousel from "@/components/HeroCarousel";
+import { realImage } from "@/lib/courseMeta";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,7 @@ export default async function HomePage() {
       id: c.id,
       name: c.name,
       description: feat?.tagline || stripHtml(c.description).slice(0, 140),
-      image: feat?.image || c.big_avatar || c.avatar,
+      image: feat?.image || realImage(c.big_avatar) || realImage(c.avatar),
       previewVideo: feat?.previewVideo || undefined,
       previewDuration: feat?.previewDuration,
       enrolled: mine.has(c.id),
@@ -50,7 +51,14 @@ export default async function HomePage() {
   // Continue training — closest to done first, so the course someone's most
   // likely to actually finish today leads instead of just enrollment order.
   const inProgress = (user.courses ?? [])
-    .filter((c) => c.completion_status !== "Completed" && Number(c.completion_percentage ?? 0) > 0)
+    // TalentLMS sometimes reports 100% with a status other than "Completed",
+    // so filter on both — finished courses belong in Review, not here.
+    .filter(
+      (c) =>
+        c.completion_status !== "Completed" &&
+        Number(c.completion_percentage ?? 0) > 0 &&
+        Number(c.completion_percentage ?? 0) < 100
+    )
     .sort((a, b) => Number(b.completion_percentage ?? 0) - Number(a.completion_percentage ?? 0))
     .map((c) => toItem(c.id))
     .filter(Boolean) as CarouselItem[];

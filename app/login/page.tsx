@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,17 +31,21 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-6">
-      <div className="w-full max-w-md">
-        <Link href="/" className="mb-8 block text-center text-lg font-bold tracking-tight">
-          <span className="neon-sign">CHRIS COLLINS</span> <span className="neon-sign-gold">INC</span>
-        </Link>
-        <form
-          onSubmit={onSubmit}
-          className="rounded-xl border border-ink-700 bg-ink-900 p-8 shadow-2xl"
-        >
-          <h1 className="mb-6 text-xl font-bold text-white">Member Login</h1>
+      {/* White card, square corners, orange top rule — matches the Coach
+          Fulfillment System login so the internal tools read as one suite. */}
+      <div className="w-full max-w-[400px] border-t-4 border-gold-500 bg-white px-9 py-10 shadow-2xl">
+        <p className="font-display text-sm font-bold uppercase tracking-tight text-[#111]">
+          Chris Collins <span className="text-gold-500">Inc</span>
+        </p>
+        <h1 className="mb-7 mt-1 font-display text-xl font-bold uppercase text-[#111]">
+          Member Login
+        </h1>
 
-          <label className="mb-1 block text-sm text-slate-400" htmlFor="login">
+        <form onSubmit={onSubmit}>
+          <label
+            className="mb-1 block font-display text-[10px] font-semibold uppercase tracking-[0.08em] text-stone-500"
+            htmlFor="login"
+          >
             Username or email
           </label>
           <input
@@ -51,10 +54,13 @@ export default function LoginPage() {
             onChange={(e) => setLogin(e.target.value)}
             required
             autoComplete="username"
-            className="mb-4 w-full rounded-md border border-ink-700 bg-ink-800 px-3 py-2 text-white outline-none focus:border-gold-500"
+            className="mb-4 w-full rounded-[2px] border border-[#d9d9d9] bg-white px-3 py-2 text-sm text-[#111] outline-none focus:border-gold-500"
           />
 
-          <label className="mb-1 block text-sm text-slate-400" htmlFor="password">
+          <label
+            className="mb-1 block font-display text-[10px] font-semibold uppercase tracking-[0.08em] text-stone-500"
+            htmlFor="password"
+          >
             Password
           </label>
           <input
@@ -64,11 +70,11 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="current-password"
-            className="mb-6 w-full rounded-md border border-ink-700 bg-ink-800 px-3 py-2 text-white outline-none focus:border-gold-500"
+            className="mb-6 w-full rounded-[2px] border border-[#d9d9d9] bg-white px-3 py-2 text-sm text-[#111] outline-none focus:border-gold-500"
           />
 
           {error && (
-            <p className="mb-4 rounded-md border border-red-800 bg-red-950/50 px-3 py-2 text-sm text-red-300">
+            <p className="mb-4 rounded-[2px] border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </p>
           )}
@@ -76,13 +82,14 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-md bg-gold-500 py-2.5 font-semibold text-ink-950 transition hover:bg-gold-400 disabled:opacity-50"
+            className="w-full rounded-[2px] bg-accent-500 py-2.5 font-display text-xs font-semibold uppercase tracking-wide text-[#16130a] transition hover:bg-accent-600 disabled:opacity-50"
           >
             {busy ? "Signing in…" : "Sign In"}
           </button>
         </form>
-        <p className="mt-4 text-center text-xs text-slate-600">
-          Trouble signing in? Contact your account manager.
+
+        <p className="mt-5 text-center text-xs text-stone-500">
+          Trouble signing in? <span className="font-medium text-gold-600">Contact your account manager.</span>
         </p>
       </div>
     </main>
