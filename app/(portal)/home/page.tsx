@@ -71,105 +71,108 @@ export default async function HomePage() {
   const pulseThreads = board ? summarizeThreads(board).slice(0, 3) : [];
 
   return (
-    <div className="pb-8">
+    <div className="pb-10">
       <HeroCarousel items={featured} />
 
-      <div className="px-8">
+      <div className="px-12 pt-7">
         {/* Today — live session, standing, latest achievement. The reason to open
             the app today, not just a discovery feed. */}
         {(home.liveSession.enabled || rank || latestBadge) && (
-          <section className="mt-8 grid gap-4 md:grid-cols-3">
+          <section className="mb-9 grid gap-3.5 md:grid-cols-[1.3fr_1fr_1fr]">
             {home.liveSession.enabled && (
               <a
                 href={home.liveSession.joinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-gold-500/40 bg-gradient-to-br from-gold-500/10 to-ink-900 p-5 transition hover:border-gold-500/70"
+                className="border border-gold-500/40 bg-gradient-to-br from-gold-500/10 to-ink-900 p-4 transition hover:border-gold-500/70"
               >
-                <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gold-500">
+                <div className="mb-2 flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.06em] text-gold-500">
                   <span className="live-dot h-1.5 w-1.5 rounded-full bg-gold-500" />
                   Next live session
                 </div>
-                <h3 className="font-display text-sm uppercase text-white">{home.liveSession.title}</h3>
-                <p className="mt-1 text-xs text-slate-400">{home.liveSession.whenLabel}</p>
+                <h3 className="font-display text-sm font-semibold uppercase text-white">{home.liveSession.title}</h3>
+                <p className="mb-3 mt-1 text-xs text-stone-500">{home.liveSession.whenLabel}</p>
+                <span className="block w-full rounded-[3px] bg-accent-500 py-[9px] text-center font-display text-[11px] font-semibold uppercase tracking-wide text-ink-950 transition hover:bg-accent-400">
+                  Join reminder
+                </span>
               </a>
             )}
 
             {rank && (
               <Link
                 href="/leaderboard"
-                className="rounded-lg border border-ink-700 bg-ink-900 p-5 transition hover:border-gold-500/50"
+                className="border border-ink-700 bg-ink-900 p-4 transition hover:border-gold-500/50"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-display text-2xl font-bold text-white">{Number(user.points ?? 0).toLocaleString()}</p>
-                    <p className="text-[11px] uppercase tracking-wide text-slate-500">points</p>
+                    <p className="font-display text-[22px] font-bold text-white">{Number(user.points ?? 0).toLocaleString()}</p>
+                    <p className="text-[10.5px] text-stone-500">points</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-display text-2xl font-bold text-accent-500">#{rank}</p>
-                    <p className="text-[11px] uppercase tracking-wide text-slate-500">on leaderboard</p>
+                    <p className="font-display text-[22px] font-bold text-accent-500">#{rank}</p>
+                    <p className="text-[10.5px] text-stone-500">on leaderboard</p>
                   </div>
                 </div>
                 {aheadOfPct !== null && aheadOfPct > 0 && (
-                  <p className="mt-3 text-xs text-slate-500">Ahead of {aheadOfPct}% of members · Level {user.level ?? 1}</p>
+                  <p className="mt-3.5 text-xs text-stone-500">Level {user.level ?? 1} · ahead of {aheadOfPct}% of members</p>
                 )}
               </Link>
             )}
 
             {latestBadge && (
-              <div className="flex items-center gap-3 rounded-lg border border-ink-700 bg-ink-900 p-5">
+              <div className="flex items-center gap-2.5 border border-ink-700 bg-ink-900 p-4">
                 {latestBadge.image_url ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={latestBadge.image_url} alt="" className="h-9 w-9 shrink-0" />
+                  <img src={latestBadge.image_url} alt="" className="h-[34px] w-[34px] shrink-0" />
                 ) : (
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-accent-500/40 bg-accent-500/10 text-accent-500">
+                  <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border border-accent-500/40 bg-accent-500/10 text-accent-500">
                     ★
                   </span>
                 )}
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-white">{latestBadge.name ?? "Badge earned"}</p>
-                  <p className="text-xs text-slate-500">{latestBadge.criteria ?? "Latest achievement"}</p>
+                  <p className="truncate text-xs font-medium text-white">{latestBadge.name ?? "Badge earned"}</p>
+                  <p className="mt-0.5 text-[10.5px] text-stone-500">{latestBadge.criteria ?? "Latest achievement"}</p>
                 </div>
               </div>
             )}
           </section>
         )}
 
-        <CourseCarousel title="Continue training" items={inProgress} />
+        <CourseCarousel title="Continue Training" items={inProgress} viewAllHref="/dashboard" />
 
         {/* Community pulse — surfaces the board here instead of it living
             invisibly behind its own nav item. */}
         {pulseThreads.length > 0 && (
-          <section className="mt-10">
-            <div className="mb-3 flex items-center justify-between pr-2">
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400">From the Community</h2>
-              <Link href="/community" className="text-xs font-medium text-gold-500 hover:text-gold-400">
+          <section className="mb-9">
+            <div className="mb-3.5 flex items-center justify-between">
+              <h2 className="font-display text-xs font-semibold uppercase tracking-wide text-white">From the Community</h2>
+              <Link href="/community" className="font-display text-[11px] font-medium uppercase tracking-wide text-gold-500 hover:text-gold-400">
                 View board
               </Link>
             </div>
-            <div className="divide-y divide-ink-800 rounded-xl border border-ink-700 bg-ink-900">
-              {pulseThreads.map((t) => (
+            <div className="border border-ink-700 bg-ink-900">
+              {pulseThreads.map((t, i) => (
                 <Link
                   key={t.id}
                   href={`/community/${t.id}`}
-                  className="flex items-center gap-3 px-5 py-3.5 transition hover:bg-ink-800/60"
+                  className={`flex items-center gap-3 px-4 py-3 transition hover:bg-ink-800/60 ${i > 0 ? "border-t border-ink-700" : ""}`}
                 >
-                  {t.pinned && <span className="shrink-0 text-gold-500">📌</span>}
+                  {t.pinned && <span className="shrink-0 text-[13px] text-accent-500">📌</span>}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm text-white">{t.title}</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="truncate text-[12.5px] text-white">{t.title}</p>
+                    <p className="mt-0.5 text-[11px] text-stone-500">
                       {t.channelName} · {t.authorName}
                     </p>
                   </div>
-                  <span className="shrink-0 text-xs font-semibold text-gold-500">{t.replyCount} replies</span>
+                  <span className="shrink-0 text-[11px] font-semibold text-gold-500">{t.replyCount} replies</span>
                 </Link>
               ))}
             </div>
           </section>
         )}
 
-        <CourseCarousel title="Featured" items={featured} />
-        <CourseCarousel title="New for you" items={fresh} />
+        <CourseCarousel title="Featured" items={featured} viewAllHref="/library" />
+        <CourseCarousel title="New for you" items={fresh} viewAllHref="/library" />
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export const home = {
   featured: [
     {
       courseId: "126",
-      tagline: "EDIT ME — one-line hook for this course",
+      tagline: "The full playbook for turning service advisors into consistent revenue drivers.",
       previewVideo: "", // EDIT ME — e.g. "https://yourcdn.com/previews/course-126.mp4"
     },
   ] as FeaturedCourse[],

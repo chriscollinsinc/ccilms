@@ -12,7 +12,11 @@ export default async function PortalLayout({ children }: { children: React.React
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar userName={`${user.first_name} ${user.last_name}`} isAdmin={role !== "learner"} />
+      <Sidebar
+        userName={`${user.first_name} ${user.last_name}`}
+        subline={`Level ${user.level ?? 1} · ${Number(user.points ?? 0).toLocaleString()} pts`}
+        isAdmin={role !== "learner"}
+      />
       <main className="flex-1 overflow-y-auto">{children}</main>
     </div>
   );

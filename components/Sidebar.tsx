@@ -21,7 +21,15 @@ const adminItem = { href: "/admin/spotlight", label: "Admin Console", icon: "M12
 const ITEM_H = 40; // px
 const ITEM_GAP = 4; // px
 
-export default function Sidebar({ userName, isAdmin = false }: { userName: string; isAdmin?: boolean }) {
+export default function Sidebar({
+  userName,
+  subline,
+  isAdmin = false,
+}: {
+  userName: string;
+  subline?: string;
+  isAdmin?: boolean;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -132,7 +140,10 @@ export default function Sidebar({ userName, isAdmin = false }: { userName: strin
                 transition: "opacity 250ms ease 120ms, transform 250ms ease 120ms",
               }}
             >
-              <p className="truncate text-sm font-medium text-white">{userName}</p>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-medium text-white">{userName}</p>
+                {subline && <p className="truncate text-[10.5px] text-stone-500">{subline}</p>}
+              </div>
               <form action="/api/auth/logout" method="POST">
                 <button
                   title="Sign out"

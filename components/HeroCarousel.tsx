@@ -181,7 +181,7 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
       onMouseLeave={() => setPaused(false)}
       className="relative overflow-hidden border-b border-ink-800"
     >
-      <div className="relative aspect-[21/8] min-h-[280px] w-full bg-ink-800">
+      <div className="relative h-[340px] w-full bg-ink-800">
         {items.map((item, i) => {
           const isActive = i === idx;
           const yt = youTubeId(item.previewVideo);
@@ -232,15 +232,15 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
                 />
               )}
 
-              <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/55 to-transparent" />
 
               {/* Copy + CTAs */}
-              <div className="absolute inset-y-0 left-0 flex max-w-xl flex-col justify-center p-10">
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent-500">
-                  Featured training
+              <div className="absolute inset-y-0 left-0 flex max-w-[480px] flex-col justify-center pl-12">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-accent-500">
+                  ★ Featured training
                 </p>
                 <h1
-                  className="mt-2 text-3xl font-extrabold leading-tight text-white transition-all duration-700"
+                  className="mt-2 font-display text-3xl font-bold uppercase leading-[1.15] text-white transition-all duration-700"
                   style={{
                     transform: isActive ? "translateY(0)" : "translateY(14px)",
                     opacity: isActive ? 1 : 0,
@@ -250,7 +250,7 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
                 </h1>
                 {item.description && (
                   <p
-                    className="mt-3 text-sm leading-relaxed text-slate-300 transition-all delay-100 duration-700"
+                    className="mt-2.5 text-[13.5px] leading-relaxed text-[#E4E0CB]/80 transition-all delay-100 duration-700"
                     style={{
                       transform: isActive ? "translateY(0)" : "translateY(14px)",
                       opacity: isActive ? 1 : 0,
@@ -259,24 +259,24 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
                     {item.description}
                   </p>
                 )}
-                <div className="mt-6 flex items-center gap-3">
+                <div className="mt-[18px] flex items-center gap-2.5">
                   {item.enrolled ? (
                     <a
                       href={`/course/${item.id}`}
-                      className="rounded-md bg-accent-500 px-6 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-400"
+                      className="rounded-[3px] bg-accent-500 px-[18px] py-[9px] font-display text-[11px] font-semibold uppercase tracking-wide text-ink-950 transition hover:bg-accent-400"
                     >
                       {item.pct > 0 && item.pct < 100 ? "Continue" : item.pct >= 100 ? "Review" : "Start now"}
                     </a>
                   ) : (
                     <form action={`/api/course/${item.id}/enroll`} method="POST">
-                      <button className="rounded-md bg-accent-500 px-6 py-2.5 text-sm font-semibold text-ink-950 transition hover:bg-accent-400">
-                        Add to my training
+                      <button className="rounded-[3px] bg-accent-500 px-[18px] py-[9px] font-display text-[11px] font-semibold uppercase tracking-wide text-ink-950 transition hover:bg-accent-400">
+                        Start now
                       </button>
                     </form>
                   )}
                   <a
                     href="/library"
-                    className="rounded-md border border-ink-700 px-6 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white"
+                    className="rounded-[3px] border border-white/20 bg-white/5 px-[18px] py-[9px] font-display text-[11px] font-semibold uppercase tracking-wide text-white transition hover:bg-white/10"
                   >
                     Browse library
                   </a>
@@ -286,47 +286,21 @@ export default function HeroCarousel({ items }: { items: CarouselItem[] }) {
           );
         })}
 
-        {/* Controls */}
+        {/* Dots — bottom-left thin bars */}
         {items.length > 1 && (
-          <>
-            <button
-              onClick={() => goto((idx - 1 + items.length) % items.length)}
-              aria-label="Previous"
-              className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-ink-700/80 bg-ink-950/50 px-3 py-1.5 text-lg text-slate-300 backdrop-blur transition hover:text-white"
-            >
-              ‹
-            </button>
-            <button
-              onClick={() => goto((idx + 1) % items.length)}
-              aria-label="Next"
-              className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-ink-700/80 bg-ink-950/50 px-3 py-1.5 text-lg text-slate-300 backdrop-blur transition hover:text-white"
-            >
-              ›
-            </button>
-            <div className="absolute bottom-5 right-6 z-10 flex gap-2">
-              {items.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goto(i)}
-                  aria-label={`Slide ${i + 1}`}
-                  className="h-1.5 rounded-full transition-all duration-300"
-                  style={{
-                    width: i === idx ? 24 : 10,
-                    background: i === idx ? "#d9a233" : "rgba(148,163,184,.45)",
-                  }}
-                />
-              ))}
-            </div>
-          </>
+          <div className="absolute bottom-[18px] left-12 z-10 flex gap-1.5">
+            {items.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goto(i)}
+                aria-label={`Slide ${i + 1}`}
+                className={`h-[3px] w-5 rounded-[2px] transition-colors duration-300 ${
+                  i === idx ? "bg-gold-500" : "bg-white/25 hover:bg-white/40"
+                }`}
+              />
+            ))}
+          </div>
         )}
-
-        {/* Slide progress bar */}
-        <div className="absolute inset-x-0 bottom-0 z-10 h-[3px] bg-ink-950/50">
-          <div
-            className="h-full bg-gold-500"
-            style={{ width: `${Math.round(progress * 100)}%`, transition: "width 120ms linear" }}
-          />
-        </div>
       </div>
 
       <style jsx global>{`
