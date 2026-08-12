@@ -85,8 +85,7 @@ export default async function HomePage() {
       <div className="px-12 pt-7">
         {/* Today — live session, standing, latest achievement. The reason to open
             the app today, not just a discovery feed. */}
-        {(home.liveSession.enabled || rank || latestBadge) && (
-          <section className="mb-9 grid gap-3.5 md:grid-cols-[1.3fr_1fr_1fr]">
+        <section className="mb-9 grid gap-3.5 md:grid-cols-[1.3fr_1fr_1fr]">
             {home.liveSession.enabled && (
               <a
                 href={home.liveSession.joinUrl}
@@ -106,26 +105,37 @@ export default async function HomePage() {
               </a>
             )}
 
-            {rank && (
-              <Link
-                href="/leaderboard"
-                className="border border-ink-700 bg-ink-900 p-4 transition hover:border-gold-500/50"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-display text-[22px] font-bold text-white">{Number(user.points ?? 0).toLocaleString()}</p>
-                    <p className="text-[10.5px] text-stone-500">points</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-display text-[22px] font-bold text-accent-500">#{rank}</p>
-                    <p className="text-[10.5px] text-stone-500">on leaderboard</p>
-                  </div>
+            {/* Points/level always shows; the "#N" rank appears only for accounts
+                that place on the leaderboard (admins are excluded by design). */}
+            <Link
+              href="/leaderboard"
+              className="border border-ink-700 bg-ink-900 p-4 transition hover:border-gold-500/50"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-display text-[22px] font-bold text-white">{Number(user.points ?? 0).toLocaleString()}</p>
+                  <p className="text-[10.5px] text-stone-500">points</p>
                 </div>
-                {aheadOfPct !== null && aheadOfPct > 0 && (
-                  <p className="mt-3.5 text-xs text-stone-500">Level {user.level ?? 1} · ahead of {aheadOfPct}% of members</p>
-                )}
-              </Link>
-            )}
+                <div className="text-right">
+                  {rank ? (
+                    <>
+                      <p className="font-display text-[22px] font-bold text-accent-500">#{rank}</p>
+                      <p className="text-[10.5px] text-stone-500">on leaderboard</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="font-display text-[22px] font-bold text-accent-500">L{user.level ?? 1}</p>
+                      <p className="text-[10.5px] text-stone-500">level</p>
+                    </>
+                  )}
+                </div>
+              </div>
+              <p className="mt-3.5 text-xs text-stone-500">
+                {rank && aheadOfPct !== null && aheadOfPct > 0
+                  ? `Level ${user.level ?? 1} · ahead of ${aheadOfPct}% of members`
+                  : "View the leaderboard →"}
+              </p>
+            </Link>
 
             {latestBadge && (
               <div className="flex items-center gap-2.5 border border-ink-700 bg-ink-900 p-4">
@@ -144,7 +154,6 @@ export default async function HomePage() {
               </div>
             )}
           </section>
-        )}
 
         <CourseCarousel title="Continue Training" items={inProgress} viewAllHref="/dashboard" />
 
